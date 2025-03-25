@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
+# NOTE: This is to import the database.
 import mysql.connector
 from mysql.connector import Error
 from tabulate import tabulate
 
+# INFO: Creating user class and attributes.  
 class User:
     def __init__(self, name, age, gender, province, educational_level):
         self.name = name
@@ -12,6 +14,7 @@ class User:
         self.province = province
         self.educational_level = educational_level
 
+# INFO: Creating a data management class.
 class DatabaseManager:
     def __init__(self, db_name='jason'):
         try:
@@ -27,7 +30,7 @@ class DatabaseManager:
         except Error as e:
             print(f'Error connecting to MySQL: {e}')
 
-    def create_table(self):
+    def create_table(self): # NOTE: This will create a database if it isn't created.
         try:
             self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS users (
@@ -43,7 +46,7 @@ class DatabaseManager:
         except Error as e:
             print(f'Error creating table: {e}')
 
-    def add_user(self, user):
+    def add_user(self, user): # INFO: This function is for user creation.
         try:
             query = '''
                 INSERT INTO users (name, age, gender, province, educational_level) 
@@ -55,7 +58,7 @@ class DatabaseManager:
         except Error as e:
             print(f'Error adding user: {e}')
 
-    def view_by_province(self, province):
+    def view_by_province(self, province): #  INFO: This will allow the user to view stats by province.
         try:
             query = 'SELECT * FROM users WHERE province = %s'
             self.cursor.execute(query, (province,))
@@ -64,7 +67,7 @@ class DatabaseManager:
             print(f'Error retrieving data: {e}')
             return []
 
-    def get_stats(self):
+    def get_stats(self): # NOTE: This brings up stats.
         try:
             query = 'SELECT province, COUNT(*) FROM users GROUP BY province'
             self.cursor.execute(query)
@@ -87,7 +90,7 @@ class DatabaseManager:
             print(f'Error retrieving custom statistics: {e}')
             return (0, 0)
 
-    def close_connection(self):
+    def close_connection(self): # INFO: Will end the connection to the database.
         try:
             if self.connection.is_connected():
                 self.cursor.close()
@@ -96,11 +99,11 @@ class DatabaseManager:
         except Error as e:
             print(f'Error closing connection: {e}')
 
-class App:
+class App: # INFO: New class to manage the user experience.
     def __init__(self):
         self.db = DatabaseManager()
 
-    def show_menu(self):
+    def show_menu(self): # INFO: Displays menu in a neat format.
         menu = [
             ['Option', 'Description'],
             ['1', 'Enter User Data'],
@@ -111,7 +114,7 @@ class App:
         ]
         print(tabulate(menu, headers="firstrow", tablefmt="grid"))
 
-    def handle_input(self):
+    def handle_input(self): # INFO: Handle input is self explanatory.
         while True:
             self.show_menu()
             choice = input('Choose an option: ')
@@ -130,7 +133,7 @@ class App:
             else:
                 print('Invalid input! Please try again.')
 
-    def add_user(self):
+    def add_user(self): # INFO: Allow new user creation.
         name = input('Enter name: ').strip()
         age = int(input('Enter age: '))
         gender = input('Enter gender (Male/Female/Other): ').strip().lower()
@@ -139,7 +142,7 @@ class App:
         new_user = User(name, age, gender, province, educational_level)
         self.db.add_user(new_user)
 
-    def view_data(self):
+    def view_data(self): # INFO: Displays user data.
         province = input('Enter the province to view: ').strip()
         users = self.db.view_by_province(province)
         if users:
@@ -147,14 +150,14 @@ class App:
         else:
             print('No data found for that province.')
 
-    def show_statistics(self):
+    def show_statistics(self): # INFO: Provides stats.
         stats = self.db.get_stats()
         if stats:
             print(tabulate(stats, headers=["Province", "User Count"], tablefmt="grid"))
         else:
             print('No data available.')
 
-    def show_custom_statistics(self):
+    def show_custom_statistics(self): # INFO: Shows custom stats.
         province = input('Enter the province for custom statistics: ').strip()
         educated, uneducated = self.db.get_education_stats(province)
         total = educated + uneducated
