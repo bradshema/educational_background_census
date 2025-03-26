@@ -20,13 +20,16 @@ class DatabaseManager:
         try:
             self.connection = mysql.connector.connect(
                 host='localhost',
-                user='root',
-                password='Butterknife69',
-                database=db_name
+                user='root',  
+                password='Butterknife69',  
+                database=db_name 
             )
-            self.cursor = self.connection.cursor()
-            self.create_table()
-            print('Database connected successfully!')
+            if self.connection.is_connected():
+                self.cursor = self.connection.cursor()
+                self.create_table()
+                print('Database connected successfully!')
+            else:
+                print('Failed to connect to the database.')
         except Error as e:
             print(f'Error connecting to MySQL: {e}')
 
