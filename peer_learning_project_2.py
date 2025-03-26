@@ -21,7 +21,7 @@ class DatabaseManager:
             self.connection = mysql.connector.connect(
                 host='localhost',
                 user='root',
-                password='Butterknife69',
+                password='',
                 database=db_name
             )
             self.cursor = self.connection.cursor()
@@ -58,6 +58,15 @@ class DatabaseManager:
         except Error as e:
             print(f'Error adding user: {e}')
 
+    def get_stats(self): # NOTE: GETTING STATS.
+        try:
+            query = 'SELECT province, COUNT(*) FROM users GROUP BY province'
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except Error as e:
+            print(f'Error retrieving statistics: {e}')
+            return []
+
     def view_by_province(self, province): #  INFO: This will allow the user to view stats by province.
         try:
             query = 'SELECT * FROM users WHERE province = %s'
@@ -65,15 +74,6 @@ class DatabaseManager:
             return self.cursor.fetchall()
         except Error as e:
             print(f'Error retrieving data: {e}')
-            return []
-
-    def get_stats(self): # NOTE: This brings up stats.
-        try:
-            query = 'SELECT province, COUNT(*) FROM users GROUP BY province'
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
-        except Error as e:
-            print(f'Error retrieving statistics: {e}')
             return []
 
     def get_education_stats(self, province):
@@ -135,10 +135,20 @@ class App: # INFO: New class to manage the user experience.
 
     def add_user(self): # INFO: Allow new user creation.
         name = input('Enter name: ').strip()
+        if not name:
+            raise ValueError("Name cannot be empty.")
         age = int(input('Enter age: '))
+        if not age:
+            raise ValueError("Age cannot be empty.")
         gender = input('Enter gender (Male/Female/Other): ').strip().lower()
+        if not gender:
+            raise ValueError("Gender cannot be empty.")
         province = input('Enter province: ').strip()
+        if not province:
+            raise ValueError("Province cannot be empty.")
         educational_level = input('Enter highest level of education (Primary, Highschool, Bachelors, Masters, PhD): ').strip().lower()
+        if not educational_level:
+            raise ValueError("Education level cannot be empty.")
         new_user = User(name, age, gender, province, educational_level)
         self.db.add_user(new_user)
 
