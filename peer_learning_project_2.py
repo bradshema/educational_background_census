@@ -20,15 +20,9 @@ class DatabaseManager:
         try:
             self.connection = mysql.connector.connect(
                 host='localhost',
-<<<<<<< HEAD
                 user='root',  
                 password='Butterknife69',  
                 database=db_name 
-=======
-                user='root',
-                password='',
-                database=db_name
->>>>>>> 32873cd0f04d53e6dfc569c4d1dd14df20a8764b
             )
             if self.connection.is_connected():
                 self.cursor = self.connection.cursor()
