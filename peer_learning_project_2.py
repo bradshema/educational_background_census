@@ -16,18 +16,20 @@ class User:
 
 # INFO: Creating a data management class.
 class DatabaseManager:
-    def __init__(self, db_name='jason'):
+    def __init__(self, db_name='education_statistics'):
         try:
             self.connection = mysql.connector.connect(
                 host='localhost',
                 user='root',  
-                password='Butterknife69',  
+                password='',  
                 database=db_name 
             )
             if self.connection.is_connected():
                 self.cursor = self.connection.cursor()
                 self.create_table()
-                print('Database connected successfully!')
+                print("Welcome to the Education Statistics Database!")
+                print("This program allows you to view statistics and reports about education in Rwanda.")
+                print("-----------------")
             else:
                 print('Failed to connect to the database.')
         except Error as e:
@@ -35,7 +37,7 @@ class DatabaseManager:
 
     def create_table(self): # NOTE: This will create a database if it isn't created.
         try:
-            self.cursor.execute('''
+            self.cursor.execute(''' 
                 CREATE TABLE IF NOT EXISTS users (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     name VARCHAR(255),
@@ -109,11 +111,11 @@ class App: # INFO: New class to manage the user experience.
     def show_menu(self): # INFO: Displays menu in a neat format.
         menu = [
             ['Option', 'Description'],
-            ['1', 'Enter User Data'],
-            ['2', 'View Data By Province'],
-            ['3', 'Show Statistics & Reports'],
-            ['4', 'Show Custom Statistics'],
-            ['5', 'Exit Application']
+            # ['1', 'Enter User Data'],
+            ['1', 'View Data By Province'],
+            ['2', 'Show Statistics & Reports'],
+            ['3', 'Show Custom Statistics'],
+            ['4', 'Exit Application']
         ]
         print(tabulate(menu, headers="firstrow", tablefmt="grid"))
 
@@ -122,14 +124,12 @@ class App: # INFO: New class to manage the user experience.
             self.show_menu()
             choice = input('Choose an option: ')
             if choice == '1':
-                self.add_user()
-            elif choice == '2':
                 self.view_data()
-            elif choice == '3':
+            elif choice == '2':
                 self.show_statistics()
-            elif choice == '4':
+            elif choice == '3':
                 self.show_custom_statistics()
-            elif choice == '5':
+            elif choice == '4':
                 self.db.close_connection()
                 print('Exiting...')
                 break
@@ -155,29 +155,76 @@ class App: # INFO: New class to manage the user experience.
         new_user = User(name, age, gender, province, educational_level)
         self.db.add_user(new_user)
 
-    def view_data(self): # INFO: Displays user data.
-        province = input('Enter the province to view: ').strip()
-        users = self.db.view_by_province(province)
-        if users:
-            print(tabulate(users, headers=["ID", "Name", "Age", "Gender", "Province", "Education"], tablefmt="grid"))
-        else:
-            print('No data found for that province.')
+    def view_data(self):  # INFO: Displays user data.
+        provinces = {
+            1: "Northern",
+            2: "Eastern",
+            3: "Western",
+            4: "Southern",
+            5: "Kigali"
+        }
+
+        print("Select a province by number:")
+        for number, province in provinces.items():
+            print(f"{number}. {province}")
+
+        while True:
+            try:
+                choice = int(input('Enter the number of the province to view: ').strip())
+                if choice in provinces:
+                    province = provinces[choice]
+                    users = self.db.view_by_province(province)
+                    if users:
+                        print(tabulate(users, headers=["ID", "Name", "Age", "Gender", "Province", "Education"], tablefmt="grid"))
+                    else:
+                        print(f'No data found for {province}.')
+                    break  # Exit the loop once the user has selected a valid province
+                else:
+                    print('Invalid number! Please select a valid province number.')
+            except ValueError:
+                print('Please enter a valid number.')
 
     def show_statistics(self): # INFO: Provides stats.
         stats = self.db.get_stats()
         if stats:
+            print("This table shows you the number of users in our survey in each province:")
             print(tabulate(stats, headers=["Province", "User Count"], tablefmt="grid"))
+            print("-----------------")
         else:
             print('No data available.')
 
     def show_custom_statistics(self): # INFO: Shows custom stats.
-        province = input('Enter the province for custom statistics: ').strip()
-        educated, uneducated = self.db.get_education_stats(province)
-        total = educated + uneducated
-        if total > 0:
-            print(f"In {province}, {educated} people are educated ({(educated / total) * 100:.2f}%) and {uneducated} are uneducated ({(uneducated / total) * 100:.2f}%).")
-        else:
-            print(f'No data available for {province}.')
+        provinces = {
+            1: "Northern",
+            2: "Eastern",
+            3: "Western",
+            4: "Southern",
+            5: "Kigali"
+        }
+
+        print("Select a province by number:")
+        for number, province in provinces.items():
+            print(f"{number}. {province}")
+
+        while True:
+            try:
+                choice = int(input('Enter the number of the province for custom statistics: ').strip())
+                if choice in provinces:
+                    province = provinces[choice]
+
+                    educated, uneducated = self.db.get_education_stats(province)
+                    total = educated + uneducated
+                    if total > 0:
+                        print(f"In {province}, {educated} people are educated ({(educated / total) * 100:.2f}%) and {uneducated} are uneducated ({(uneducated / total) * 100:.2f}%).")
+                    else:
+                        print(f'No data available for {province}.')
+                    print("-----------------")
+                    print("-----------------")
+                    break
+                else:
+                    print('Invalid number! Please select a valid province number.')
+            except ValueError:
+                print('Please enter a valid number.')
 
 if __name__ == '__main__':
     app = App()
