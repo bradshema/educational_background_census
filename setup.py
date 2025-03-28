@@ -23,6 +23,7 @@ def connect_db():
 """)
     print("[✔] Database connection function saved in db_connection.py")
 
+
 def create_database(username, password):
     print("[+] Creating database: education_statistics...")
     os.system(f"mysql -u{username} -p'{password}' -e 'CREATE DATABASE IF NOT EXISTS education_statistics;'")
