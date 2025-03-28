@@ -36,7 +36,7 @@ Next, import the database from the exported_database.sql file into the database 
 
 Navigate to the folder where exported_database.sql is located.
 
-Run the following command (replace your_database_name with the name you created):
+Run this command (replace your_database_name with the name you created):
 
     "mysql -u root -p your_database_name < exported_database.sql"
 
