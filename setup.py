@@ -46,9 +46,10 @@ def create_users_table(username, password):
     print("[✔] Users table created successfully.")
 
 def insert_user_data(username, password):
-    print("[+] Inserting user data from ./databases/data.sql...")
+    print("[+] Configuring survey statistics ./databases/data.sql...")
     os.system(f"mysql -u{username} -p'{password}' education_statistics < ./databases/data.sql")
-    print("[✔] User data inserted successfully.")
+    print("[✔] Statistics successfully configured in the database.")
+    print("---------------------")
 
 def main():
     username, password = get_mysql_credentials()
@@ -57,7 +58,7 @@ def main():
     create_users_table(username, password)
     insert_user_data(username, password)
     print("[✔] All steps completed. You can now run your application.")
-    print("[!] To continue, run: python your_next_script.py")
+    print("[!] To continue, run: python peer_learning_project_2.py")
 
 if __name__ == "__main__":
     main()
