@@ -175,7 +175,7 @@ class App: # INFO: New class to manage the user experience.
                 choice = int(input('Enter the number of the province to view: ').strip())
                 if choice in provinces:
                     province = provinces[choice]
-                    users = self.db.view_by_province(province)
+                    users = self.db.view_by_province(f"{province} Province")
                     if users:
                         print(tabulate(users, headers=["ID", "Name", "Age", "Gender", "Province", "Education"], tablefmt="grid"))
                     else:
