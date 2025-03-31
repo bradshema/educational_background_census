@@ -6,20 +6,20 @@ This guide will help you set up the project, access the MySQL database, and run 
 
 Start by cloning the project repository to your local machine:
 
-    "git clone https://github.com/bradshema/educational_background_census.git"
+    git clone https://github.com/bradshema/educational_background_census.git
 
 
 ## 2. Navigate to Project Directory
 
-    "cd educational_background_census"
+    cd educational_background_census
 
 ## 3. Install Dependencies
 
-    "pip install -r requirements.txt"
+    pip install -r requirements.txt
 
 ## 4. Database Setup
 Run the setup script which will configure your MySQL database:
-    "./setup.py"
+    ./setup.py
 
 The script will prompt you for:
 - MySQL username (default: root)
