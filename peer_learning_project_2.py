@@ -112,7 +112,7 @@ class App: # INFO: New class to manage the user experience.
         menu = [
             ['Option', 'Description'],
             ['1', 'View Data By Province'],
-            ['2', 'Show Statistics & Reports'],
+            ['2', 'Number people in the survey by province'],
             ['3', 'Show Custom Statistics'],
             ['4', 'Enter User Data'],
             ['5', 'Exit Application']
@@ -214,7 +214,7 @@ class App: # INFO: New class to manage the user experience.
                 if choice in provinces:
                     province = provinces[choice]
 
-                    educated, uneducated = self.db.get_education_stats(province)
+                    educated, uneducated = self.db.get_education_stats(f"{province} Province")
                     total = educated + uneducated
                     if total > 0:
                         print(f"In {province}, {educated} people are educated ({(educated / total) * 100:.2f}%) and {uneducated} are uneducated ({(uneducated / total) * 100:.2f}%).")
