@@ -32,7 +32,7 @@ This will automatically set up the database for you.
     python3 peer_learning_project_2.py
 
 Follow the menu instructions displayed in the terminal.
-Troubleshooting!!!
+Happy browsing!!!
 
 
 ## Troubleshooting
