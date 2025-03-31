@@ -19,6 +19,7 @@ Start by cloning the project repository to your local machine:
 
 ## 4. Database Setup
 Run the setup script which will configure your MySQL database:
+
     ./setup.py
 
 The script will prompt you for:
