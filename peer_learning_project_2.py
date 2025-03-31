@@ -14,7 +14,7 @@ class User:
         self.province = province
         self.educational_level = educational_level
 
-# INFO: Creating a data management class.
+# INFO: Building a data management class.
 class DatabaseManager:
     def __init__(self, db_name='education_statistics'):
         try:
