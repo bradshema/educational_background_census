@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-# NOTE: This is to import the database.
+# NOTE: The purpose of this step is the database import
 import mysql.connector
 from mysql.connector import Error
 from tabulate import tabulate
 
-# INFO: Creating user class and attributes.  
+# INFO: Creating  class and attributes.  
 class User:
     def __init__(self, name, age, gender, province, educational_level):
         self.name = name
