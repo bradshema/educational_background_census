@@ -35,7 +35,7 @@ class DatabaseManager:
         except Error as e:
             print(f'Error connecting to MySQL: {e}')
 
-    def create_table(self): # NOTE: This will create a database if it isn't created.
+    def create_table(self): # NOTE: This will create a database if it isn't created yet.
         try:
             self.cursor.execute(''' 
                 CREATE TABLE IF NOT EXISTS users (
