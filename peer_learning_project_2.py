@@ -111,11 +111,11 @@ class App: # INFO: New class to manage the user experience.
     def show_menu(self): # INFO: Displays menu in a neat format.
         menu = [
             ['Option', 'Description'],
-            # ['1', 'Enter User Data'],
             ['1', 'View Data By Province'],
             ['2', 'Show Statistics & Reports'],
             ['3', 'Show Custom Statistics'],
-            ['4', 'Exit Application']
+            ['4', 'Enter User Data'],
+            ['5', 'Exit Application']
         ]
         print(tabulate(menu, headers="firstrow", tablefmt="grid"))
 
@@ -130,6 +130,8 @@ class App: # INFO: New class to manage the user experience.
             elif choice == '3':
                 self.show_custom_statistics()
             elif choice == '4':
+                self.add_user()
+            elif choice == '5':
                 self.db.close_connection()
                 print('Exiting...')
                 break
